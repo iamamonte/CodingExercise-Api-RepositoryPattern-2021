@@ -8,9 +8,9 @@ using System.Text.Json.Serialization;
 
 namespace GroceryStore.DAL
 {
-    public class CustomerRepository : IRepository<Customer>
+    public class CustomerRepository : RepositoryBase<CustomerEntity>, IRepository<CustomerEntity>
     {
-        private ICollection<Customer> Customers;
+        private ICollection<CustomerEntity> Customers;
         private readonly IDatabaseAccess _databaseAccess;
         private readonly JsonSerializerOptions options = new JsonSerializerOptions
         {
@@ -19,7 +19,7 @@ namespace GroceryStore.DAL
 
         private class CustomersDbModel 
         {
-            public List<Customer> Customers { get; set; }
+            public List<CustomerEntity> Customers { get; set; }
             public CustomersDbModel() { }
         }
 
@@ -37,7 +37,7 @@ namespace GroceryStore.DAL
         }
 
 
-        public void Add(Customer entity)
+        public override void Add(CustomerEntity entity)
         {
 
             int nextId = Customers.Max(x => x.Id) + 1;
@@ -46,9 +46,9 @@ namespace GroceryStore.DAL
             SaveContext();
         }
 
-        public void Delete(Customer entity)
+        public override void Delete(CustomerEntity entity)
         {
-            Customer customer = FindById(entity.Id);
+            CustomerEntity customer = FindById(entity.Id);
             if (customer != null)
             {
                 Customers.Remove(customer);
@@ -57,19 +57,19 @@ namespace GroceryStore.DAL
             
         }
 
-        public Customer FindById(int id)
+        public override CustomerEntity FindById(int id)
         {
             return Customers.FirstOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Customer> List()
+        public override IEnumerable<CustomerEntity> List()
         {
-            return Customers.ToList();
+            return Customers;
         }
 
-        public void Update(Customer entity)
+        public void Update(CustomerEntity entity)
         {
-            Customer customer = FindById(entity.Id);
+            CustomerEntity customer = FindById(entity.Id);
             customer.Name = entity.Name;
             SaveContext();
         }

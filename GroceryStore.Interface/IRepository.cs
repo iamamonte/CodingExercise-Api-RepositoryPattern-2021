@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GroceryStore.Interface
 {
-    public interface IRepository<T>  where T : IEntityBase
+    public interface IRepository<T>  where T : class
     {
         T FindById(int id);
         void Update(T entity);

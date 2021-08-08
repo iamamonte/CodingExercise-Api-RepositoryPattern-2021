@@ -2,7 +2,7 @@
 using GroceryStore.Interface;
 using System;
 
-namespace GroceryStore.DAL
+namespace GroceryStore.Infrastructure
 {
     public class Customer :  ICustomer
     {

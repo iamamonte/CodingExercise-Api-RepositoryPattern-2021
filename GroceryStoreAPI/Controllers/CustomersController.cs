@@ -1,8 +1,9 @@
 ﻿
-using GroceryStore.DAL;
+using GroceryStore.Infrastructure;
 using GroceryStore.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,13 @@ namespace GroceryStoreAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomersController : ControllerBase
+    public class CustomersController : ApiControllerBase
     {
-        private readonly IRepository<Customer> _customerRepository;
-        public CustomersController(IRepository<Customer> customerRepository) 
+        private readonly IGroceryStoreManager _groceryStoreManager;
+        // TODO: Configure logging
+        public CustomersController(IGroceryStoreManager groceryStoreManager, ILogger<APIContracts.Customer> logger)
         {
-            _customerRepository = customerRepository;
+            _groceryStoreManager = groceryStoreManager;
         }
         // GET: api/<CustomersController>
         [HttpGet]
@@ -29,8 +31,11 @@ namespace GroceryStoreAPI.Controllers
         public IActionResult Get()
         {
 
-            var customers = _customerRepository.List().Select(customer => new APIContracts.Customer { Id = customer.Id, Name = customer.Name });
-            return Ok(customers);
+            var response = _groceryStoreManager.FindCustomers();
+            return Ok(response.Result?
+                .Select(
+                    customer => new APIContracts.Customer { Id = customer.Id, Name = customer.Name }));
+            
         }
 
         // GET api/<CustomersController>/5
@@ -39,11 +44,19 @@ namespace GroceryStoreAPI.Controllers
         [ProducesResponseType(typeof(APIContracts.Customer), StatusCodes.Status404NotFound)]
         public IActionResult Get(int id)
         {
-            var customer = _customerRepository.FindById(id);
-            if (customer == null)
+            var response = _groceryStoreManager.FindCustomers(x => x.Id == id);
+            if (!response.Succeeded)
+            {
+                return ErrorResult;
+            }
+            
+            if (!response.Result.Any())
             {
                 return NotFound();
             }
+
+            var customer = response.Result.Single();
+
             return Ok(new APIContracts.Customer { Id = customer.Id, Name = customer.Name });
         }
 
@@ -58,8 +71,13 @@ namespace GroceryStoreAPI.Controllers
                 return BadRequest(new { @ValidationError = "Customer must not be null." });
             }
             var newCustomer = new Customer { Name = customer.Name };
-            _customerRepository.Add(newCustomer);
-            return Ok(new APIContracts.Customer { Name = newCustomer.Name, Id = newCustomer.Id });
+            var response = _groceryStoreManager.CreateOrUpdateCustomers(new Customer[] { newCustomer });
+            if (!response.Succeeded)
+            {
+                return BadRequest(response.ErrorMessages);
+            }
+            var createdCustomer = response.Result.Single();
+            return Ok(new APIContracts.Customer { Name = createdCustomer.Name, Id = createdCustomer.Id });
         }
 
         // PUT api/<CustomersController>/5
@@ -69,14 +87,15 @@ namespace GroceryStoreAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Put(int id, [FromBody] APIContracts.Customer customer)
         {
-            var existingCustomer = _customerRepository.FindById(id);
-            if (existingCustomer == null)
+            var newCustomer = new Customer { Name = customer.Name, Id = id };
+            var response = _groceryStoreManager.CreateOrUpdateCustomers(new Customer[] { newCustomer });
+            if (!response.Result.Any()) 
             {
                 return NotFound();
             }
-            existingCustomer.Name = customer.Name;
-            _customerRepository.Update(existingCustomer);
-            return Ok(new APIContracts.Customer { Name = existingCustomer.Name, Id = existingCustomer.Id });
+            var result = response.Result;
+            var affectedCustomer = result.Single();
+            return Ok(new APIContracts.Customer { Name = affectedCustomer.Name, Id = affectedCustomer.Id });
         }
 
         // DELETE api/<CustomersController>/5
@@ -84,13 +103,14 @@ namespace GroceryStoreAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Delete(int id)
         {
-            var customer = _customerRepository.FindById(id);
-            if (customer != null) 
-            {
-                _customerRepository.Delete(customer);
-            }
-            
+            _groceryStoreManager.DeleteCustomers(new Customer[] { new Customer { Id = id } });
             return Ok();
+        }
+
+        [Route("[action]")]
+        public IActionResult Throw() 
+        {
+            throw new NotImplementedException("This is on purpose.");
         }
     }
 }

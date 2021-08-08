@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroceryStore.DAL", "Grocery
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroceryStore.API", "GroceryStore.API\GroceryStore.API.csproj", "{E41F37A8-8CF7-4F1C-B3F7-05E19EDEBB47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroceryStore.Infrastructure", "GroceryStore.Infrastructure\GroceryStore.Infrastructure.csproj", "{6BD83653-5B3F-4BA3-9912-8BA660F095C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{E41F37A8-8CF7-4F1C-B3F7-05E19EDEBB47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E41F37A8-8CF7-4F1C-B3F7-05E19EDEBB47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E41F37A8-8CF7-4F1C-B3F7-05E19EDEBB47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BD83653-5B3F-4BA3-9912-8BA660F095C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BD83653-5B3F-4BA3-9912-8BA660F095C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BD83653-5B3F-4BA3-9912-8BA660F095C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BD83653-5B3F-4BA3-9912-8BA660F095C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

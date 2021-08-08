@@ -27,13 +27,13 @@ namespace GroceryStore.Tests
         public void Add_Succeeds()
         {
             int expectedCustomerCount = customerRepository.List().Count() + 1;
-            Customer newCustomer = new Customer { Name = faker.Name.FullName() };
+            CustomerEntity newCustomer = new CustomerEntity { Name = faker.Name.FullName() };
             customerRepository.Add(newCustomer);
             
             int actualCustomerCount = customerRepository.List().Count();
             Assert.AreEqual(expectedCustomerCount, actualCustomerCount);
             
-            ICustomer createdCustomer = customerRepository.FindById(newCustomer.Id);
+            CustomerEntity createdCustomer = customerRepository.FindById(newCustomer.Id);
             Assert.IsNotNull(createdCustomer);
             Assert.AreEqual(newCustomer.Name, createdCustomer.Name);
         }
@@ -43,10 +43,10 @@ namespace GroceryStore.Tests
         {
             var existingCustomers = customerRepository.List();
             int expectedCustomerCount = existingCustomers.Count();
-            Customer expectedCustomer = new Customer { Name = $"Updated {faker.Name.FullName()}", Id = existingCustomers.First().Id };
+            CustomerEntity expectedCustomer = new CustomerEntity { Name = $"Updated {faker.Name.FullName()}", Id = existingCustomers.First().Id };
             customerRepository.Update(expectedCustomer);
 
-            ICustomer actualCustomer = customerRepository.FindById(expectedCustomer.Id);
+            CustomerEntity actualCustomer = customerRepository.FindById(expectedCustomer.Id);
     
             Assert.IsNotNull(actualCustomer);
             Assert.AreEqual(expectedCustomer.Name, actualCustomer.Name);
@@ -57,7 +57,7 @@ namespace GroceryStore.Tests
         public void Delete_Succeeds() 
         {
             int expectedCustomerCount = customerRepository.List().Count() - 1;
-            customerRepository.Delete(new Customer { Id = 1 });
+            customerRepository.Delete(new CustomerEntity { Id = 1 });
 
             Assert.AreEqual(expectedCustomerCount, customerRepository.List().Count());
 

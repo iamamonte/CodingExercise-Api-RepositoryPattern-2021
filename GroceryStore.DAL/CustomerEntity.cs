@@ -5,8 +5,8 @@ using System.Text;
 
 namespace GroceryStore.DAL
 {
-    public abstract class EntityBase
+    public class CustomerEntity : EntityBase, ICustomer
     {
-        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
