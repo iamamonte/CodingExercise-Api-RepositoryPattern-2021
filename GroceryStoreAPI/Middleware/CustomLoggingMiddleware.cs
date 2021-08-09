@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using GroceryStore.Interface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace GroceryStoreAPI.Middleware
@@ -10,11 +12,12 @@ namespace GroceryStoreAPI.Middleware
     public class CustomExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger _globalLogger;
+        private readonly ILoggerAdapter _globalLogger;
 
-        public CustomExceptionMiddleware(RequestDelegate next, ILogger logger)
+        public CustomExceptionMiddleware(RequestDelegate next, ILoggerAdapter logger)
         {
             _next = next;
+            _globalLogger = logger;
         }
 
         public async Task Invoke(HttpContext httpContext)
@@ -25,7 +28,13 @@ namespace GroceryStoreAPI.Middleware
             }
             catch (Exception ex)
             {
-                _globalLogger.LogError("An unhandled exception has occurred.", ex);
+                string genericMessage = "An unhandled exception has occurred.";
+                _globalLogger.Error(ex, genericMessage, httpContext);
+                var response = httpContext.Response;
+                response.ContentType = "application/json";
+                response.StatusCode = 500;
+                var result = JsonSerializer.Serialize(new { @Message = genericMessage });
+                await response.WriteAsync(result);
             }
         }
     }

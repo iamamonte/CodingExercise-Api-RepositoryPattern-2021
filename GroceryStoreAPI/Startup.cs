@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace GroceryStoreAPI
 {
@@ -28,7 +29,8 @@ namespace GroceryStoreAPI
             services.AddControllers();
             services.AddSingleton<IDatabaseAccess, DatabaseAccess>();
             services.AddTransient<IRepository<CustomerEntity>, CustomerRepository>();
-            services.AddSingleton<ILoggerAdapter, LoggerAdapter>();
+            services.AddTransient<Serilog.ILogger>(s => new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Debug().CreateLogger());
+            services.AddTransient<ILoggerAdapter, SerilogAdapter>();
             services.AddTransient<IGroceryStoreManager, GroceryStoreManager>();
 
             if (HostingEnvironment.IsDevelopment())
@@ -49,13 +51,13 @@ namespace GroceryStoreAPI
             app.UseRouting();
 
             app.UseAuthorization();
+            
+            app.UseMiddleware<CustomExceptionMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
-
-            //app.UseMiddleware<CustomExceptionMiddleware>();
+            });   
         }
     }
 }
