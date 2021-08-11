@@ -1,14 +1,15 @@
 ﻿using Bogus;
-using GroceryStore.DAL;
+using GroceryStore.Domain.Core;
+using GroceryStore.Domain.Interface.Core;
+using GroceryStore.Domain.Manager;
 using GroceryStore.Infrastructure;
-using GroceryStore.Interface;
+using GroceryStore.Infrastructure.Core;
+using GroceryStore.Infrastructure.DataAccess.Interface;
 using Moq;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
+using Core = GroceryStore.Domain.Core;
 namespace GroceryStore.Tests.ManagerTests
 {
     public class CustomerUnitTests_Fails
@@ -36,7 +37,7 @@ namespace GroceryStore.Tests.ManagerTests
                 .Throws(new Exception(errorMessage));
             
             manager = new GroceryStoreManager(mockCustomerRepository.Object, mockLogger.Object);
-            var response = manager.CreateOrUpdateCustomers(new Customer[] { new Customer { } });
+            var response = manager.CreateOrUpdateCustomers(new ICustomer[] { new Core.Customer { } });
 
             Assert.IsFalse(response.Succeeded);
             Assert.IsNull(response.Result);

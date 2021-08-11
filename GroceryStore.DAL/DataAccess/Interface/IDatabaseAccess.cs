@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GroceryStore.DAL
+namespace GroceryStore.Infrastructure.DataAccess.Interface
 {
     public interface IDatabaseAccess
     {

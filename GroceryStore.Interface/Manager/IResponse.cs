@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GroceryStore.Interface
+namespace GroceryStore.Manager.Interface
 {
     public interface IResponse<T> where T : class
     {

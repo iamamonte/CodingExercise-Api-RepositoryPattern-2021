@@ -1,6 +1,8 @@
-﻿using GroceryStore.DAL;
+﻿using GroceryStore.Domain.Interface.Manager;
+using GroceryStore.Domain.Manager;
 using GroceryStore.Infrastructure;
-using GroceryStore.Interface;
+using GroceryStore.Infrastructure.Core;
+using GroceryStore.Infrastructure.DataAccess.Interface;
 using GroceryStoreAPI.Helpers;
 using GroceryStoreAPI.Middleware;
 using Microsoft.AspNetCore.Builder;
@@ -8,7 +10,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace GroceryStoreAPI

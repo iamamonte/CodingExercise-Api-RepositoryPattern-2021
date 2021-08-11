@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GroceryStore.DAL\GroceryStore.Infrastructure.csproj" />
+    <ProjectReference Include="..\GroceryStore.Interface\GroceryStore.Domain.Interface.csproj" />
+  </ItemGroup>
+
+</Project>

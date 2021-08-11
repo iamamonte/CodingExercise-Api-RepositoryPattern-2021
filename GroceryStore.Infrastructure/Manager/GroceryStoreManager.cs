@@ -1,12 +1,15 @@
-﻿using GroceryStore.DAL;
-using GroceryStore.Interface;
-using Microsoft.Extensions.Logging;
+﻿using GroceryStore.Domain.Core;
+using GroceryStore.Domain.Interface.Core;
+using GroceryStore.Domain.Interface.Manager;
+using GroceryStore.Infrastructure;
+using GroceryStore.Infrastructure.Core;
+using GroceryStore.Infrastructure.DataAccess.Interface;
+using GroceryStore.Manager.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace GroceryStore.Infrastructure
+namespace GroceryStore.Domain.Manager
 {
     public class GroceryStoreManager : IGroceryStoreManager
     {
@@ -18,6 +21,7 @@ namespace GroceryStore.Infrastructure
             _customerRespository = repository;
             _libraryLogger = libraryLogger;
         }
+
         public IResponse<IEnumerable<ICustomer>> CreateOrUpdateCustomers(ICustomer[] customers)
         {
             try

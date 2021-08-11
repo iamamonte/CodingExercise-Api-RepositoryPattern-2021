@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace GroceryStore.Interface
+namespace GroceryStore.Infrastructure.DataAccess.Interface
 {
     public interface IRepository<T>  where T : class
     {

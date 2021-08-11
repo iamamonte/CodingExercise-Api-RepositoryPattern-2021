@@ -8,9 +8,8 @@
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GroceryStore.API\GroceryStore.API.csproj" />
-    <ProjectReference Include="..\GroceryStore.DAL\GroceryStore.DAL.csproj" />
-    <ProjectReference Include="..\GroceryStore.Infrastructure\GroceryStore.Infrastructure.csproj" />
-    <ProjectReference Include="..\GroceryStore.Interface\GroceryStore.Interface.csproj" />
+    <ProjectReference Include="..\GroceryStore.DAL\GroceryStore.Infrastructure.csproj" />
+    <ProjectReference Include="..\GroceryStore.Infrastructure\GroceryStore.Domain.csproj" />
+    <ProjectReference Include="..\GroceryStore.Interface\GroceryStore.Domain.Interface.csproj" />
   </ItemGroup>
 </Project>

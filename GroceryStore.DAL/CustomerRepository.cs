@@ -1,12 +1,11 @@
-﻿using GroceryStore.Interface;
-using System;
+﻿using GroceryStore.Infrastructure.Core;
+using GroceryStore.Infrastructure.DataAccess;
+using GroceryStore.Infrastructure.DataAccess.Interface;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
-namespace GroceryStore.DAL
+namespace GroceryStore.Infrastructure
 {
     public class CustomerRepository : RepositoryBase<CustomerEntity>, IRepository<CustomerEntity>
     {

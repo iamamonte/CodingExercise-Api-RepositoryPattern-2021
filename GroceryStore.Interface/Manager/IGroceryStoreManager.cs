@@ -1,8 +1,9 @@
-﻿using System;
+﻿using GroceryStore.Domain.Interface.Core;
+using GroceryStore.Manager.Interface;
+using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace GroceryStore.Interface
+namespace GroceryStore.Domain.Interface.Manager
 {
     public interface IGroceryStoreManager
     {

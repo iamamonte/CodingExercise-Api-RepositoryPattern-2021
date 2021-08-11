@@ -1,9 +1,9 @@
 using Bogus;
-using GroceryStore.DAL;
-using GroceryStore.Interface;
+using GroceryStore.Infrastructure;
+using GroceryStore.Infrastructure.Core;
+using GroceryStore.Infrastructure.DataAccess.Interface;
 using Moq;
 using NUnit.Framework;
-using System.IO;
 using System.Linq;
 
 namespace GroceryStore.Tests

@@ -1,8 +1,7 @@
 ﻿
-using GroceryStore.Interface;
-using System;
+using GroceryStore.Domain.Interface.Core;
 
-namespace GroceryStore.Infrastructure
+namespace GroceryStore.Domain.Core
 {
     public class Customer :  ICustomer
     {

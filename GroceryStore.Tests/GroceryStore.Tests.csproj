@@ -27,9 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GroceryStore.DAL\GroceryStore.DAL.csproj" />
-    <ProjectReference Include="..\GroceryStore.Infrastructure\GroceryStore.Infrastructure.csproj" />
-    <ProjectReference Include="..\GroceryStore.Interface\GroceryStore.Interface.csproj" />
+    <ProjectReference Include="..\GroceryStore.DAL\GroceryStore.Infrastructure.csproj" />
+    <ProjectReference Include="..\GroceryStore.Infrastructure\GroceryStore.Domain.csproj" />
+    <ProjectReference Include="..\GroceryStore.Interface\GroceryStore.Domain.Interface.csproj" />
   </ItemGroup>
 
 </Project>

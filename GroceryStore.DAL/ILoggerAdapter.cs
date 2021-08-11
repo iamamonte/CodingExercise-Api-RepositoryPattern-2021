@@ -1,9 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
-namespace GroceryStore.Interface
+
+namespace GroceryStore.Infrastructure
 {
     public interface ILoggerAdapter
     {

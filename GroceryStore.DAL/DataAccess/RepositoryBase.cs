@@ -1,9 +1,9 @@
-﻿using GroceryStore.Interface;
+﻿using GroceryStore.Infrastructure.Core;
+using GroceryStore.Infrastructure.DataAccess.Interface;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace GroceryStore.DAL
+namespace GroceryStore.Infrastructure.DataAccess
 {
     public abstract class RepositoryBase<T> : IRepository<T> where T : EntityBase
     {

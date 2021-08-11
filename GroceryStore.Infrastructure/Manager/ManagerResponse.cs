@@ -1,9 +1,8 @@
-﻿using GroceryStore.Interface;
+﻿using GroceryStore.Manager.Interface;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace GroceryStore.Infrastructure
+namespace GroceryStore.Domain.Manager
 {
     public class ManagerResponse<T> : IResponse<T> where T : class 
     {

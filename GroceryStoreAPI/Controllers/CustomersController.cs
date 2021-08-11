@@ -1,15 +1,13 @@
 ﻿
-using GroceryStore.Infrastructure;
-using GroceryStore.Interface;
+using GroceryStore.Domain.Core;
+using GroceryStore.Domain.Interface.Manager;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using APIContracts = GroceryStore.API;
+using APIContracts = GroceryStore.API.V1;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

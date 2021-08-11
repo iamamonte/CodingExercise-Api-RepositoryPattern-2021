@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GroceryStore.Interface
+namespace GroceryStore.Domain.Interface.Core
 {
     public interface ICustomer
     {
