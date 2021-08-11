@@ -33,11 +33,11 @@ namespace GroceryStore.Tests.ManagerTests
         {
             string errorMessage = faker.Lorem.Sentence();
             Mock<IRepository<CustomerEntity>> mockCustomerRepository = new Mock<IRepository<CustomerEntity>>();
-            mockCustomerRepository.Setup(x => x.Add(It.IsAny<CustomerEntity>()))
+            mockCustomerRepository.Setup(x => x.AddAsync(It.IsAny<CustomerEntity>()))
                 .Throws(new Exception(errorMessage));
             
             manager = new GroceryStoreManager(mockCustomerRepository.Object, mockLogger.Object);
-            var response = manager.CreateOrUpdateCustomers(new ICustomer[] { new Core.Customer { } });
+            var response = manager.CreateOrUpdateCustomers(new ICustomer[] { new Core.Customer { } }).Result;
 
             Assert.IsFalse(response.Succeeded);
             Assert.IsNull(response.Result);
@@ -51,13 +51,13 @@ namespace GroceryStore.Tests.ManagerTests
         {
             string errorMessage = faker.Lorem.Sentence();
             Mock<IRepository<CustomerEntity>> mockCustomerRepository = new Mock<IRepository<CustomerEntity>>();
-            mockCustomerRepository.Setup(x => x.FindById(1))
-                .Returns(new CustomerEntity { Id = 1, Name = "Found Customer" });
-            mockCustomerRepository.Setup(x => x.Update(It.IsAny<CustomerEntity>()))
+            mockCustomerRepository.Setup(x => x.FindByIdAsync(1))
+                .ReturnsAsync(new CustomerEntity { Id = 1, Name = "Found Customer" });
+            mockCustomerRepository.Setup(x => x.UpdateAsync(It.IsAny<CustomerEntity>()))
                 .Throws(new Exception(errorMessage));
 
             manager = new GroceryStoreManager(mockCustomerRepository.Object, mockLogger.Object);
-            var response = manager.CreateOrUpdateCustomers(new Customer[] { new Customer { Id = 1 } });
+            var response = manager.CreateOrUpdateCustomers(new Customer[] { new Customer { Id = 1 } }).Result;
 
             Assert.IsFalse(response.Succeeded);
             Assert.IsNull(response.Result);
@@ -71,11 +71,11 @@ namespace GroceryStore.Tests.ManagerTests
         {
             string errorMessage = faker.Lorem.Sentence();
             Mock<IRepository<CustomerEntity>> mockCustomerRepository = new Mock<IRepository<CustomerEntity>>();
-            mockCustomerRepository.Setup(x => x.List())
+            mockCustomerRepository.Setup(x => x.ListAsync())
                 .Throws(new Exception(errorMessage));
 
             manager = new GroceryStoreManager(mockCustomerRepository.Object, mockLogger.Object);
-            var response = manager.FindCustomers(x => true);
+            var response = manager.FindCustomers(x => true).Result;
 
             Assert.IsFalse(response.Succeeded);
             Assert.IsNull(response.Result);
@@ -89,13 +89,13 @@ namespace GroceryStore.Tests.ManagerTests
         {
             string errorMessage = faker.Lorem.Sentence();
             Mock<IRepository<CustomerEntity>> mockCustomerRepository = new Mock<IRepository<CustomerEntity>>();
-            mockCustomerRepository.Setup(x => x.FindById(1))
-               .Returns(new CustomerEntity { Id = 1, Name = "Found Customer" });
+            mockCustomerRepository.Setup(x => x.FindByIdAsync(1))
+               .ReturnsAsync(new CustomerEntity { Id = 1, Name = "Found Customer" });
             mockCustomerRepository.Setup(x => x.Delete(It.IsAny<CustomerEntity>()))
                 .Throws(new Exception(errorMessage));
 
             manager = new GroceryStoreManager(mockCustomerRepository.Object, mockLogger.Object);
-            var response = manager.DeleteCustomers(new Customer[] { new Customer { Id = 1 } });
+            var response = manager.DeleteCustomers(new Customer[] { new Customer { Id = 1 } }).Result;
 
             Assert.IsFalse(response.Succeeded);
             Assert.IsNull(response.Result);

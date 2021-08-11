@@ -26,14 +26,14 @@ namespace GroceryStore.Tests
         [Test]
         public void Add_Succeeds()
         {
-            int expectedCustomerCount = customerRepository.List().Count() + 1;
+            int expectedCustomerCount = customerRepository.ListAsync().Result.Count() + 1;
             CustomerEntity newCustomer = new CustomerEntity { Name = faker.Name.FullName() };
-            customerRepository.Add(newCustomer);
+            customerRepository.AddAsync(newCustomer);
             
-            int actualCustomerCount = customerRepository.List().Count();
+            int actualCustomerCount = customerRepository.ListAsync().Result.Count();
             Assert.AreEqual(expectedCustomerCount, actualCustomerCount);
             
-            CustomerEntity createdCustomer = customerRepository.FindById(newCustomer.Id);
+            CustomerEntity createdCustomer = customerRepository.FindByIdAsync(newCustomer.Id).Result;
             Assert.IsNotNull(createdCustomer);
             Assert.AreEqual(newCustomer.Name, createdCustomer.Name);
         }
@@ -41,32 +41,32 @@ namespace GroceryStore.Tests
         [Test]
         public void Update_Succeeds() 
         {
-            var existingCustomers = customerRepository.List();
+            var existingCustomers = customerRepository.ListAsync().Result;
             int expectedCustomerCount = existingCustomers.Count();
             CustomerEntity expectedCustomer = new CustomerEntity { Name = $"Updated {faker.Name.FullName()}", Id = existingCustomers.First().Id };
-            customerRepository.Update(expectedCustomer);
+            customerRepository.UpdateAsync(expectedCustomer);
 
-            CustomerEntity actualCustomer = customerRepository.FindById(expectedCustomer.Id);
+            CustomerEntity actualCustomer = customerRepository.FindByIdAsync(expectedCustomer.Id).Result;
     
             Assert.IsNotNull(actualCustomer);
             Assert.AreEqual(expectedCustomer.Name, actualCustomer.Name);
-            Assert.AreEqual(expectedCustomerCount, customerRepository.List().Count());
+            Assert.AreEqual(expectedCustomerCount, customerRepository.ListAsync().Result.Count());
         }
 
         [Test]
         public void Delete_Succeeds() 
         {
-            int expectedCustomerCount = customerRepository.List().Count() - 1;
-            customerRepository.Delete(new CustomerEntity { Id = 1 });
+            int expectedCustomerCount = customerRepository.ListAsync().Result.Count() - 1;
+            customerRepository.DeleteAsync(new CustomerEntity { Id = 1 });
 
-            Assert.AreEqual(expectedCustomerCount, customerRepository.List().Count());
+            Assert.AreEqual(expectedCustomerCount, customerRepository.ListAsync().Result.Count());
 
         }
 
         [Test]
         public void FindById_ReturnsNull() 
         {
-            Assert.IsNull(customerRepository.FindById(-1));
+            Assert.IsNull(customerRepository.FindByIdAsync(-1).Result);
         }
     }
 }

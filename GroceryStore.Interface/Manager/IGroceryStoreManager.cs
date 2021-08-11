@@ -2,13 +2,14 @@
 using GroceryStore.Manager.Interface;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GroceryStore.Domain.Interface.Manager
 {
     public interface IGroceryStoreManager
     {
-        public IResponse<IEnumerable<ICustomer>> CreateOrUpdateCustomers(ICustomer[] customers);
-        public IResponse<object> DeleteCustomers(ICustomer[] customers);
-        public IResponse<IEnumerable<ICustomer>> FindCustomers(Func<ICustomer, bool> searchExpression = null);
+        public Task<IResponse<IEnumerable<ICustomer>>> CreateOrUpdateCustomers(ICustomer[] customers);
+        public Task<IResponse<object>> DeleteCustomers(ICustomer[] customers);
+        public Task<IResponse<IEnumerable<ICustomer>>> FindCustomers(Func<ICustomer, bool> searchExpression = null);
     }
 }

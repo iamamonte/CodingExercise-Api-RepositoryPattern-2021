@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GroceryStore.Infrastructure.DataAccess.Interface
 {
@@ -9,5 +10,11 @@ namespace GroceryStore.Infrastructure.DataAccess.Interface
         void Delete(T entity);
         void Add(T entity);
         IEnumerable<T> List();
+
+        Task<T> FindByIdAsync(int id);
+        void UpdateAsync(T entity);
+        void DeleteAsync(T entity);
+        void AddAsync(T entity);
+        Task<IEnumerable<T>> ListAsync();
     }
 }

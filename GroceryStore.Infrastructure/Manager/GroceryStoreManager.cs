@@ -8,6 +8,7 @@ using GroceryStore.Manager.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GroceryStore.Domain.Manager
 {
@@ -22,23 +23,23 @@ namespace GroceryStore.Domain.Manager
             _libraryLogger = libraryLogger;
         }
 
-        public IResponse<IEnumerable<ICustomer>> CreateOrUpdateCustomers(ICustomer[] customers)
+        public async Task<IResponse<IEnumerable<ICustomer>>> CreateOrUpdateCustomers(ICustomer[] customers)
         {
             try
             {
                 List<ICustomer> affectedCustomers = new List<ICustomer>();
                 foreach (var customer in customers)
                 {
-                    var entity = _customerRespository.FindById(customer.Id);
+                    var entity = await _customerRespository.FindByIdAsync(customer.Id);
                     if (entity != null)
                     {
                         entity.Name = customer.Name;
-                        _customerRespository.Update(entity);
+                        _customerRespository.UpdateAsync(entity);
                     }
                     else
                     {
                         var newCustomer = new CustomerEntity { Name = customer.Name };
-                        _customerRespository.Add(newCustomer);
+                        _customerRespository.AddAsync(newCustomer);
                         customer.Id = newCustomer.Id;
                     }
                     affectedCustomers.Add(customer);
@@ -54,14 +55,14 @@ namespace GroceryStore.Domain.Manager
            
         }
 
-        public IResponse<object> DeleteCustomers(ICustomer[] customers)
+        public async Task<IResponse<object>> DeleteCustomers(ICustomer[] customers)
         {
             try
             {
                 int deletedEntities = 0;
                 foreach (var customer in customers)
                 {
-                    var entity = _customerRespository.FindById(customer.Id);
+                    var entity = await _customerRespository.FindByIdAsync(customer.Id);
                     if (entity != null)
                     {
                         _customerRespository.Delete(entity);
@@ -78,11 +79,12 @@ namespace GroceryStore.Domain.Manager
             }
         }
 
-        public IResponse<IEnumerable<ICustomer>> FindCustomers(Func<ICustomer, bool> searchExpression = null)
+        public async Task<IResponse<IEnumerable<ICustomer>>> FindCustomers(Func<ICustomer, bool> searchExpression = null)
         {
             try
             {
-                var result = _customerRespository.List()
+                var response = await _customerRespository.ListAsync();
+                var result = response
                     .Where(searchExpression ?? (x => true))
                     .Select(x => new Customer { Id = x.Id, Name = x.Name });
                 return new ManagerResponse<IEnumerable<ICustomer>>(result);

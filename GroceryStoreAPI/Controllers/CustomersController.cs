@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using APIContracts = GroceryStore.API.V1;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -26,10 +27,10 @@ namespace GroceryStoreAPI.Controllers
         // GET: api/<CustomersController>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<APIContracts.Customer>), StatusCodes.Status200OK)]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
 
-            var response = _groceryStoreManager.FindCustomers();
+            var response = await _groceryStoreManager.FindCustomers();
             return Ok(response.Result?
                 .Select(
                     customer => new APIContracts.Customer { Id = customer.Id, Name = customer.Name }));
@@ -40,9 +41,9 @@ namespace GroceryStoreAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(APIContracts.Customer), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(APIContracts.Customer), StatusCodes.Status404NotFound)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var response = _groceryStoreManager.FindCustomers(x => x.Id == id);
+            var response = await _groceryStoreManager.FindCustomers(x => x.Id == id);
             if (!response.Succeeded)
             {
                 return ErrorResult;
@@ -62,14 +63,14 @@ namespace GroceryStoreAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(APIContracts.Customer), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Post([FromBody] APIContracts.Customer customer)
+        public async Task<IActionResult> Post([FromBody] APIContracts.Customer customer)
         {
             if (customer == null)
             {
                 return BadRequest(new { @ValidationError = "Customer must not be null." });
             }
             var newCustomer = new Customer { Name = customer.Name };
-            var response = _groceryStoreManager.CreateOrUpdateCustomers(new Customer[] { newCustomer });
+            var response = await _groceryStoreManager.CreateOrUpdateCustomers(new Customer[] { newCustomer });
             if (!response.Succeeded)
             {
                 return BadRequest(response.ErrorMessages);
@@ -83,10 +84,10 @@ namespace GroceryStoreAPI.Controllers
         [ProducesResponseType(typeof(APIContracts.Customer), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Put(int id, [FromBody] APIContracts.Customer customer)
+        public async Task<IActionResult> Put(int id, [FromBody] APIContracts.Customer customer)
         {
             var newCustomer = new Customer { Name = customer.Name, Id = id };
-            var response = _groceryStoreManager.CreateOrUpdateCustomers(new Customer[] { newCustomer });
+            var response = await _groceryStoreManager.CreateOrUpdateCustomers(new Customer[] { newCustomer });
             if (!response.Result.Any()) 
             {
                 return NotFound();
@@ -99,9 +100,9 @@ namespace GroceryStoreAPI.Controllers
         // DELETE api/<CustomersController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _groceryStoreManager.DeleteCustomers(new Customer[] { new Customer { Id = id } });
+            await _groceryStoreManager.DeleteCustomers(new Customer[] { new Customer { Id = id } });
             return Ok();
         }
 

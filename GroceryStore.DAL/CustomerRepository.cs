@@ -4,6 +4,7 @@ using GroceryStore.Infrastructure.DataAccess.Interface;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace GroceryStore.Infrastructure
 {
@@ -30,13 +31,14 @@ namespace GroceryStore.Infrastructure
                 .ToList();
         }
 
-        private void SaveContext()
+        private async void SaveContext()
         {
-            _databaseAccess.Write(JsonSerializer.Serialize(new CustomersDbModel { Customers = this.Customers.ToList() }, options));
+            await Task.Factory.StartNew(() => _databaseAccess.Write(JsonSerializer.Serialize(new CustomersDbModel { Customers = this.Customers.ToList() }, options)));
+            
         }
 
 
-        public override void Add(CustomerEntity entity)
+        public async override void AddAsync(CustomerEntity entity)
         {
 
             int nextId = Customers.Max(x => x.Id) + 1;
@@ -45,9 +47,9 @@ namespace GroceryStore.Infrastructure
             SaveContext();
         }
 
-        public override void Delete(CustomerEntity entity)
+        public async override void DeleteAsync(CustomerEntity entity)
         {
-            CustomerEntity customer = FindById(entity.Id);
+            CustomerEntity customer = await FindByIdAsync(entity.Id);
             if (customer != null)
             {
                 Customers.Remove(customer);
@@ -56,19 +58,19 @@ namespace GroceryStore.Infrastructure
             
         }
 
-        public override CustomerEntity FindById(int id)
+        public async override Task<CustomerEntity> FindByIdAsync(int id)
         {
-            return Customers.FirstOrDefault(x => x.Id == id);
+            return await Task.FromResult(Customers.FirstOrDefault(x => x.Id == id));
         }
 
-        public override IEnumerable<CustomerEntity> List()
+        public async override Task<IEnumerable<CustomerEntity>> ListAsync()
         {
-            return Customers;
+            return await Task.FromResult(Customers);
         }
 
-        public void Update(CustomerEntity entity)
+        public async override void UpdateAsync(CustomerEntity entity)
         {
-            CustomerEntity customer = FindById(entity.Id);
+            CustomerEntity customer = await FindByIdAsync(entity.Id);
             customer.Name = entity.Name;
             SaveContext();
         }
