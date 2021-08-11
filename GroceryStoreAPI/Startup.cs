@@ -33,7 +33,7 @@ namespace GroceryStoreAPI
             services.AddTransient<Serilog.ILogger>(s => new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Debug().CreateLogger());
             services.AddTransient<ILoggerAdapter, SerilogAdapter>();
             services.AddTransient<IGroceryStoreManager, GroceryStoreManager>();
-
+            services.AddSwaggerDocument();
             if (HostingEnvironment.IsDevelopment())
             {
                 //configure extended logging
@@ -51,6 +51,8 @@ namespace GroceryStoreAPI
 
             app.UseRouting();
 
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
             app.UseAuthorization();
             
             app.UseMiddleware<CustomExceptionMiddleware>();

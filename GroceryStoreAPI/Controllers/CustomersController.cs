@@ -40,7 +40,7 @@ namespace GroceryStoreAPI.Controllers
         // GET api/<CustomersController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(APIContracts.Customer), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(APIContracts.Customer), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(int id)
         {
             var response = await _groceryStoreManager.FindCustomers(x => x.Id == id);
